@@ -1,5 +1,5 @@
 # Ex.No: 05  IMPLEMENTATION OF TIME SERIES ANALYSIS AND DECOMPOSITION
-### Date: 
+### Date: 23.09.2025
 
 
 ### AIM:
@@ -13,6 +13,54 @@ To Illustrates how to perform time series analysis and decomposition on the mont
 5. Display the overall results.
 
 ### PROGRAM:
+```
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from statsmodels.tsa.seasonal import seasonal_decompose
+
+
+gold_data = pd.read_csv("/content/Gold Price (2013-2023).csv")
+
+# Clean and preprocess
+gold_data['Date'] = pd.to_datetime(gold_data['Date'])
+gold_data['Price'] = gold_data['Price'].str.replace(',', '').astype(float)
+
+# Sort by date (important for time series)
+gold_data = gold_data.sort_values('Date')
+
+# Set Date as index
+gold_data.set_index('Date', inplace=True)
+
+# Decompose (monthly seasonality, so period=30 for daily data, or 12 for monthly averages)
+decomposition = seasonal_decompose(gold_data['Price'], model='additive', period=30)
+
+# Plot results
+plt.figure(figsize=(10, 12))
+
+plt.subplot(411)
+plt.plot(gold_data['Price'], label='Gold Price')
+plt.legend(loc='upper left')
+plt.title('Gold Price (2013–2023)')
+
+plt.subplot(412)
+plt.plot(decomposition.trend, label='Trend', color='orange')
+plt.legend(loc='upper left')
+plt.title('Trend Plot')
+
+plt.subplot(413)
+plt.plot(decomposition.seasonal, label='Seasonal', color='green')
+plt.legend(loc='upper left')
+plt.title('Seasonality Plot')
+
+plt.subplot(414)
+plt.plot(decomposition.resid, label='Residual', color='red')
+plt.legend(loc='upper left')
+plt.title('Residual Plot')
+
+plt.tight_layout()
+plt.show()
+```
 
 
 
@@ -31,19 +79,19 @@ To Illustrates how to perform time series analysis and decomposition on the mont
 
 
 ### OUTPUT:
-FIRST FIVE ROWS:
+<img width="979" height="294" alt="image" src="https://github.com/user-attachments/assets/482054b3-c1f8-420d-9dc7-03b39f668ad9" />
 
 
 
-PLOTTING THE DATA:
+<img width="978" height="288" alt="image" src="https://github.com/user-attachments/assets/222ec5ea-65bc-4565-8249-97eab352bc46" />
 
-SEASONAL PLOT REPRESENTATION :
+<img width="968" height="294" alt="image" src="https://github.com/user-attachments/assets/7f23db07-5ef0-4c51-8885-a068c28e8fea" />
+
+<img width="954" height="286" alt="image" src="https://github.com/user-attachments/assets/aa3812a8-fd36-40ca-8d73-71cef738a138" />
 
 
 
-TREND PLOT REPRESENTATION :
 
-OVERAL REPRESENTATION:
 
 
 
